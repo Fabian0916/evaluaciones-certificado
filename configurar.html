@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configurar evaluación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="./styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brandmark">
+    <div class="logo-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A948F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+    </div>
+    <span class="brand-name">Panel de administrador</span>
+  </div>
+  <a href="./index.html" class="tema-name">Ver evaluación publicada →</a>
+</header>
+
+<main class="wrap" style="max-width:760px">
+
+  <h1 style="font-size:32px;margin-bottom:8px">Nueva evaluación</h1>
+  <p class="muted" style="font-size:16px;line-height:1.55;max-width:600px;margin-bottom:36px">Cada archivo que cargues aquí corresponde a una sola evaluación. Al terminar, descarga <code>evaluacion.json</code> y colócalo en la carpeta del proyecto antes de publicar o volver a desplegar en Vercel.</p>
+
+  <div class="card">
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+      <span class="section-num">1</span>
+      <h2 style="font-size:20px">Banco de preguntas</h2>
+    </div>
+    <p class="muted" style="font-size:15px;line-height:1.55;margin-bottom:20px;max-width:560px">Sube un archivo .xlsx o .csv con una pregunta por fila: el enunciado, las cuatro opciones y cuál es la correcta. Cada respuesta correcta vale un punto. <a href="./preguntas_ejemplo.csv" download style="color:var(--brand);font-weight:600">Descargar formato de ejemplo</a>.</p>
+
+    <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Seleccionar archivo de preguntas">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#55625D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.6 4.4 0 01-.2-9.2 5.5 5.5 0 0110.6-2 4.7 4.7 0 014.3 4.7 4.2 4.2 0 01-1.2 6.5"></path><path d="M12 12v8"></path><path d="M9 15l3-3 3 3"></path></svg>
+      <div>
+        <div style="font-weight:600;font-size:15px">Arrastra tu archivo aquí</div>
+        <div class="muted" style="font-size:13px;margin-top:3px">o selecciona un archivo .xlsx o .csv desde tu equipo</div>
+      </div>
+      <button type="button" class="btn btn-ghost" id="btnSeleccionar">Seleccionar archivo</button>
+      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" class="hidden">
+    </div>
+
+    <div id="fileRow" class="filerow hidden">
+      <div class="filerow-left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E5B52" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><path d="M14 2v6h6"></path></svg>
+        <div>
+          <div class="filerow-name" id="fileName"></div>
+          <div class="filerow-meta" id="fileMeta"></div>
+        </div>
+      </div>
+      <a href="#" id="btnReemplazar" style="font-size:13px;font-weight:600;color:var(--brand);flex-shrink:0">Reemplazar</a>
+    </div>
+
+    <div id="fileErrors" class="error-box hidden" style="margin-top:16px;flex-direction:column;align-items:stretch"></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+      <span class="section-num">2</span>
+      <h2 style="font-size:20px">Datos de la evaluación</h2>
+    </div>
+    <p class="muted" style="font-size:15px;line-height:1.55;margin-bottom:24px;max-width:560px">Esta información identifica la evaluación y aparece en el certificado de quienes la aprueben.</p>
+
+    <div class="field">
+      <span class="field-label">Nombre de la evaluación o tema</span>
+      <input class="input" id="inpTema" type="text" placeholder="Protocolo de lavado de manos y prevención de IAAS">
+    </div>
+
+    <div class="field">
+      <span class="field-label">Institución</span>
+      <input class="input" id="inpInstitucion" type="text" placeholder="Praxisalud">
+    </div>
+
+    <div class="field" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex-shrink:0">
+        <span class="field-label">Logo de la institución</span>
+        <div class="dropzone sm logo-box lg" id="logoDropzone" tabindex="0" role="button" aria-label="Subir logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A948F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+        </div>
+        <input type="file" id="logoInput" accept="image/*" class="hidden">
+      </div>
+      <p class="muted" style="font-size:13.5px;line-height:1.6;max-width:320px;margin-top:30px">Aparece en el encabezado de la evaluación y en el certificado. PNG, SVG o JPG.</p>
+    </div>
+
+    <div class="field" style="max-width:220px">
+      <span class="field-label">Puntaje mínimo para aprobar</span>
+      <div style="display:flex;align-items:center;border:1px solid var(--line);border-radius:4px;overflow:hidden">
+        <input type="number" id="inpPuntaje" value="90" min="1" max="100" style="width:100%;border:none;padding:12px 14px;font-size:15px;color:var(--ink);min-height:44px">
+        <span style="padding:0 14px;font-size:15px;color:var(--muted);border-left:1px solid var(--line)">%</span>
+      </div>
+      <span class="field-hint">Quien lo supere recibe el certificado automáticamente.</span>
+    </div>
+
+    <div style="height:1px;background:var(--line);margin:24px 0"></div>
+
+    <div class="field">
+      <span class="field-label">Nombre de quien firma el certificado</span>
+      <input class="input" id="inpFirmanteNombre" type="text" placeholder="Fabian…">
+    </div>
+    <div class="field">
+      <span class="field-label">Cargo de quien firma</span>
+      <input class="input" id="inpFirmanteCargo" type="text" placeholder="Coordinador de educación continuada">
+    </div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:24px 24px 0">
+      <h2 style="font-size:16px;color:var(--muted)">Vista previa del certificado</h2>
+    </div>
+    <div class="certificate-page" style="padding:20px">
+      <div class="certificate" style="transform:scale(1);width:100%">
+        <div class="border-outer"></div>
+        <div class="border-inner"></div>
+        <div class="content">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            <div class="logo-box seal-logo" id="pvLogo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A89662" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+            </div>
+            <span class="org-name" id="pvInstitucion">Institución</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <h1>Certificado de aprobación</h1>
+            <span class="lead">Se certifica que</span>
+            <div class="name">Nombre del participante</div>
+            <div class="rule"></div>
+            <div class="cargo">Cargo del participante</div>
+            <p class="body-text" id="pvCuerpo">aprobó la evaluación de conocimientos.</p>
+          </div>
+          <div class="bottom-row">
+            <div class="signature">
+              <div class="signature-inner">
+                <div class="signature-name" id="pvFirmanteNombre">&nbsp;</div>
+                <div class="signature-role" id="pvFirmanteCargo">&nbsp;</div>
+              </div>
+            </div>
+            <div class="cert-date">Fecha</div>
+            <svg width="50" height="50" viewBox="0 0 78 78" style="flex-shrink:0">
+              <circle cx="39" cy="39" r="37" fill="none" stroke="#9C7A3C" stroke-width="2"></circle>
+              <circle cx="39" cy="39" r="29" fill="none" stroke="#9C7A3C" stroke-width="1"></circle>
+              <circle cx="39" cy="39" r="22" fill="#0E5B52"></circle>
+              <path d="M30 39l6 6 13-13" fill="none" stroke="#FBF7EC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:8px">
+    <button type="button" class="btn btn-primary" id="btnDescargar" disabled>Descargar evaluación (evaluacion.json)</button>
+    <span class="muted" style="font-size:13.5px">Reemplaza el archivo en tu repositorio y vuelve a desplegar en Vercel.</span>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var adminState = { preguntas: [], logo: null, fileName: "" };
+
+  function $(id){ return document.getElementById(id); }
+
+  function normKey(k){
+    return String(k||"").toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .replace(/[^a-z0-9]/g,"");
+  }
+
+  var KEY_CANDIDATES = {
+    pregunta: ["pregunta","enunciado","preguntas"],
+    a: ["opciona","a","respuestaa","opcion1"],
+    b: ["opcionb","b","respuestab","opcion2"],
+    c: ["opcionc","c","respuestac","opcion3"],
+    d: ["opciond","d","respuestad","opcion4"],
+    correcta: ["respuestacorrecta","correcta","respuesta"]
+  };
+
+  function buildKeyMap(sampleRow){
+    var normalizedKeys = {};
+    Object.keys(sampleRow).forEach(function(k){ normalizedKeys[normKey(k)] = k; });
+    var map = {};
+    Object.keys(KEY_CANDIDATES).forEach(function(field){
+      var found = KEY_CANDIDATES[field].find(function(c){ return normalizedKeys.hasOwnProperty(c); });
+      if(found) map[field] = normalizedKeys[found];
+    });
+    return map;
+  }
+
+  function letterToIndex(val, opciones){
+    var v = String(val||"").trim();
+    var letter = v.toLowerCase().replace(/[^a-d]/g,"");
+    if(letter === "a") return 0;
+    if(letter === "b") return 1;
+    if(letter === "c") return 2;
+    if(letter === "d") return 3;
+    var idx = opciones.findIndex(function(op){ return String(op).trim().toLowerCase() === v.toLowerCase(); });
+    return idx;
+  }
+
+  function processRows(rows, fileName){
+    var errors = [];
+    var preguntas = [];
+
+    if(!rows.length){
+      showFileErrors(["El archivo no tiene filas de datos."]);
+      return;
+    }
+
+    var map = buildKeyMap(rows[0]);
+    if(!map.pregunta || !map.a || !map.b || !map.correcta){
+      showFileErrors(["No se reconocen las columnas esperadas. Revisa el formato de ejemplo (pregunta, opcion_a…opcion_d, respuesta_correcta)."]);
+      return;
+    }
+
+    rows.forEach(function(row, i){
+      var fila = i + 2; // header is row 1
+      var pregunta = String(row[map.pregunta]||"").trim();
+      var opciones = [map.a, map.b, map.c, map.d].map(function(k){ return k ? String(row[k]||"").trim() : ""; }).filter(function(o){ return o !== ""; });
+
+      if(!pregunta){ return; } // skip fully blank rows silently
+      if(opciones.length < 2){ errors.push("Fila " + fila + ": necesita al menos dos opciones de respuesta."); return; }
+
+      var correctaIdx = letterToIndex(row[map.correcta], opciones);
+      if(correctaIdx < 0 || correctaIdx >= opciones.length){
+        errors.push("Fila " + fila + ": la respuesta correcta no coincide con ninguna opción.");
+        return;
+      }
+
+      preguntas.push({ pregunta: pregunta, opciones: opciones, correcta: correctaIdx });
+    });
+
+    adminState.preguntas = preguntas;
+    adminState.fileName = fileName;
+
+    $("fileName").textContent = fileName;
+    $("fileMeta").textContent = preguntas.length + " preguntas cargadas · 1 punto cada una · " + preguntas.length + " puntos en total";
+    $("fileRow").classList.remove("hidden");
+    $("dropzone").classList.add("hidden");
+
+    if(errors.length){
+      showFileErrors(errors);
+    } else {
+      $("fileErrors").classList.add("hidden");
+    }
+
+    updateDownloadState();
+  }
+
+  function showFileErrors(list){
+    var box = $("fileErrors");
+    box.innerHTML = "<div style=\"font-weight:600;margin-bottom:6px\">Revisa estas filas antes de continuar</div>" +
+      "<ul style=\"margin:0;padding-left:18px\">" + list.map(function(e){ return "<li>"+e+"</li>"; }).join("") + "</ul>";
+    box.classList.remove("hidden");
+  }
+
+  function handleFile(file){
+    var ext = file.name.split(".").pop().toLowerCase();
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var wb = (ext === "csv") ? XLSX.read(e.target.result, {type:"string"}) : XLSX.read(e.target.result, {type:"array"});
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var rows = XLSX.utils.sheet_to_json(ws, {defval:""});
+        processRows(rows, file.name);
+      } catch(err){
+        showFileErrors(["No se pudo leer el archivo. Verifica que sea un .xlsx o .csv válido."]);
+      }
+    };
+    if(ext === "csv") reader.readAsText(file); else reader.readAsArrayBuffer(file);
+  }
+
+  $("dropzone").addEventListener("click", function(){ $("fileInput").click(); });
+  $("dropzone").addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ $("fileInput").click(); } });
+  $("fileInput").addEventListener("change", function(e){ if(e.target.files[0]) handleFile(e.target.files[0]); });
+  $("btnReemplazar").addEventListener("click", function(e){
+    e.preventDefault();
+    $("fileRow").classList.add("hidden");
+    $("fileErrors").classList.add("hidden");
+    $("dropzone").classList.remove("hidden");
+    $("fileInput").value = "";
+  });
+
+  $("logoDropzone").addEventListener("click", function(){ $("logoInput").click(); });
+  $("logoDropzone").addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ $("logoInput").click(); } });
+  $("logoInput").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      adminState.logo = ev.target.result;
+      $("logoDropzone").innerHTML = '<img src="'+adminState.logo+'" alt="Logo" style="width:100%;height:100%;object-fit:contain">';
+      $("pvLogo").innerHTML = '<img src="'+adminState.logo+'" alt="Logo" style="width:100%;height:100%;object-fit:contain">';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function updatePreview(){
+    $("pvInstitucion").textContent = $("inpInstitucion").value.trim() || "Institución";
+    var tema = $("inpTema").value.trim() || "el tema evaluado";
+    var puntaje = $("inpPuntaje").value || 90;
+    $("pvCuerpo").textContent = 'aprobó la evaluación de conocimientos “' + tema + '” con un puntaje de 100% (' + (adminState.preguntas.length||0) + ' de ' + (adminState.preguntas.length||0) + ' respuestas correctas), superando el mínimo requerido del ' + puntaje + '%.';
+    $("pvFirmanteNombre").textContent = $("inpFirmanteNombre").value.trim() || "\u00A0";
+    var cargo = $("inpFirmanteCargo").value.trim();
+    var inst = $("inpInstitucion").value.trim();
+    $("pvFirmanteCargo").textContent = (cargo ? cargo + (inst ? " · " + inst : "") : "\u00A0");
+    updateDownloadState();
+  }
+
+  ["inpTema","inpInstitucion","inpPuntaje","inpFirmanteNombre","inpFirmanteCargo"].forEach(function(id){
+    $(id).addEventListener("input", updatePreview);
+  });
+
+  function updateDownloadState(){
+    var ready = adminState.preguntas.length > 0 && $("inpTema").value.trim() && $("inpInstitucion").value.trim();
+    $("btnDescargar").disabled = !ready;
+  }
+
+  $("btnDescargar").addEventListener("click", function(){
+    var config = {
+      institucion: $("inpInstitucion").value.trim(),
+      logo: adminState.logo,
+      tema: $("inpTema").value.trim(),
+      puntaje_minimo: parseInt($("inpPuntaje").value,10) || 90,
+      firmante_nombre: $("inpFirmanteNombre").value.trim(),
+      firmante_cargo: $("inpFirmanteCargo").value.trim(),
+      preguntas: adminState.preguntas,
+      generado: new Date().toISOString().slice(0,10)
+    };
+    var blob = new Blob([JSON.stringify(config, null, 2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "evaluacion.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  updatePreview();
+})();
+</script>
+</body>
+</html>

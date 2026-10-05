@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación con certificado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brandmark">
+    <div class="logo-box" id="headerLogo">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A948F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+    </div>
+    <span class="brand-name" id="headerInstitucion">Cargando&hellip;</span>
+  </div>
+  <span class="tema-name" id="headerTema"></span>
+</header>
+
+<nav class="stepper" id="stepper">
+  <div class="step"><div class="step-dot" id="dot1">1</div><span class="step-label" id="label1">Tus datos</span></div>
+  <div class="step-line" id="line1"></div>
+  <div class="step"><div class="step-dot" id="dot2">2</div><span class="step-label" id="label2">Evaluación</span></div>
+  <div class="step-line" id="line2"></div>
+  <div class="step"><div class="step-dot" id="dot3">3</div><span class="step-label" id="label3">Resultado</span></div>
+</nav>
+
+<!-- Loading -->
+<main id="screen-loading" class="wrap wrap-narrow center">
+  <p class="muted">Cargando evaluación…</p>
+</main>
+
+<!-- Error: no evaluacion.json -->
+<main id="screen-error" class="wrap wrap-narrow hidden">
+  <div class="error-box">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A4A2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><circle cx="12" cy="16" r="0.5" fill="#8A4A2D"></circle></svg>
+    <div>
+      <div style="font-weight:600;margin-bottom:4px">No hay ninguna evaluación cargada en este sitio</div>
+      <div>Crea una en <code>configurar.html</code>, descarga el archivo <code>evaluacion.json</code> y colócalo en la carpeta de este proyecto antes de publicar o volver a desplegar.</div>
+    </div>
+  </div>
+</main>
+
+<!-- 1. Datos del participante -->
+<main id="screen-datos" class="wrap wrap-narrow hidden">
+  <h2 style="font-size:26px;margin-bottom:10px">Antes de comenzar, cuéntanos quién eres</h2>
+  <p class="muted" style="margin-bottom:28px;font-size:15px;line-height:1.55">Estos datos aparecen en tu certificado si apruebas la evaluación.</p>
+
+  <form id="formDatos">
+    <label class="field">
+      <span class="field-label">Nombre completo</span>
+      <input class="input" id="inpNombre" type="text" required placeholder="María Fernanda Rodríguez Gómez">
+    </label>
+    <label class="field">
+      <span class="field-label">Cargo</span>
+      <input class="input" id="inpCargo" type="text" required placeholder="Enfermera jefa, Unidad de Hospitalización">
+    </label>
+    <label class="field">
+      <span class="field-label">Fecha</span>
+      <input class="input" id="inpFecha" type="date" required>
+    </label>
+    <button type="submit" class="btn btn-primary btn-block" style="margin-top:24px">Comenzar evaluación</button>
+  </form>
+</main>
+
+<!-- 2. Evaluación -->
+<main id="screen-quiz" class="wrap hidden">
+  <div class="wrap-narrow" style="max-width:640px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span class="muted" style="font-size:13px" id="quizProgressText">Pregunta 1 de 1</span>
+      <span class="muted" style="font-size:13px" id="quizTotalPuntos">0 puntos en total</span>
+    </div>
+    <div class="progress-track" style="margin-bottom:28px"><div class="progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+
+    <div class="card">
+      <div class="section-num" id="quizQNum">Pregunta 1</div>
+      <h2 style="font-size:21px;line-height:1.4;margin:10px 0 24px" id="quizQText"></h2>
+      <div id="quizOptions"></div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px">
+      <button type="button" class="btn btn-ghost" id="btnAnterior">Anterior</button>
+      <button type="button" class="btn btn-primary" id="btnSiguiente">Siguiente</button>
+    </div>
+  </div>
+</main>
+
+<!-- 3. Resultado -->
+<main id="screen-resultado" class="wrap hidden">
+  <div class="wrap-narrow" style="max-width:640px">
+    <div class="center" style="padding:16px 0 8px">
+      <div class="badge" id="resultBadge"><span id="resultBadgeText"></span></div>
+      <div style="font-family:'IBM Plex Serif',serif;font-size:64px;font-weight:600;line-height:1;margin-top:18px" id="resultPercent">0%</div>
+      <p class="muted" style="margin-top:10px;font-size:15px" id="resultDetail"></p>
+    </div>
+
+    <div style="height:1px;background:var(--line);margin:28px 0"></div>
+
+    <div class="card" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:28px">
+      <div><div class="field-label" style="margin-bottom:4px">Participante</div><div id="recapNombre"></div></div>
+      <div><div class="field-label" style="margin-bottom:4px">Cargo</div><div id="recapCargo"></div></div>
+      <div><div class="field-label" style="margin-bottom:4px">Fecha</div><div id="recapFecha"></div></div>
+      <div><div class="field-label" style="margin-bottom:4px">Evaluación</div><div id="recapTema"></div></div>
+    </div>
+
+    <div id="passActions" class="center hidden" style="margin-top:28px">
+      <a href="#" class="btn btn-primary" id="btnVerCertificado">Ver y descargar certificado</a>
+    </div>
+    <div id="failActions" class="center hidden" style="margin-top:28px">
+      <button type="button" class="btn btn-primary" id="btnReintentar">Volver a intentar</button>
+    </div>
+  </div>
+</main>
+
+<!-- Certificado -->
+<main id="screen-certificado" class="hidden">
+  <div class="wrap center" style="padding-bottom:24px">
+    <button type="button" class="btn btn-ghost" id="btnVolverResultado" style="margin-right:10px">Volver al resultado</button>
+    <button type="button" class="btn btn-primary" id="btnImprimir">Imprimir / Guardar como PDF</button>
+  </div>
+  <div class="certificate-page">
+    <div class="certificate">
+      <div class="border-outer"></div>
+      <div class="border-inner"></div>
+      <div class="content">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div class="logo-box seal-logo" id="certLogo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A89662" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+          </div>
+          <span class="org-name" id="certInstitucion"></span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <h1>Certificado de aprobación</h1>
+          <span class="lead">Se certifica que</span>
+          <div class="name" id="certNombre"></div>
+          <div class="rule"></div>
+          <div class="cargo" id="certCargo"></div>
+          <p class="body-text" id="certCuerpo"></p>
+        </div>
+        <div class="bottom-row">
+          <div class="signature">
+            <div class="signature-inner">
+              <div class="signature-name" id="certFirmanteNombre"></div>
+              <div class="signature-role" id="certFirmanteCargo"></div>
+            </div>
+          </div>
+          <div class="cert-date" id="certFecha"></div>
+          <svg width="60" height="60" viewBox="0 0 78 78" style="flex-shrink:0">
+            <circle cx="39" cy="39" r="37" fill="none" stroke="#9C7A3C" stroke-width="2"></circle>
+            <circle cx="39" cy="39" r="29" fill="none" stroke="#9C7A3C" stroke-width="1"></circle>
+            <circle cx="39" cy="39" r="22" fill="#0E5B52"></circle>
+            <path d="M30 39l6 6 13-13" fill="none" stroke="#FBF7EC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M26 70l13-16 13 16-13-6z" fill="#9C7A3C"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="cert-id" id="certId"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+  var state = {
+    config: null,
+    participante: { nombre: "", cargo: "", fecha: "" },
+    respuestas: [],
+    current: 0,
+    score: 0,
+    percent: 0,
+    pass: false
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){ $(id).classList.remove("hidden"); }
+  function hide(id){ $(id).classList.add("hidden"); }
+  function showOnly(id){
+    ["screen-loading","screen-error","screen-datos","screen-quiz","screen-resultado"].forEach(function(s){ hide(s); });
+    $("screen-certificado").classList.add("hidden");
+    show(id);
+  }
+
+  function fechaLarga(iso){
+    if(!iso) return "";
+    var p = iso.split("-");
+    var d = parseInt(p[2],10), m = parseInt(p[1],10)-1, y = p[0];
+    return d + " de " + MESES[m] + " de " + y;
+  }
+
+  function todayISO(){
+    var d = new Date();
+    var m = String(d.getMonth()+1).padStart(2,"0");
+    var day = String(d.getDate()).padStart(2,"0");
+    return d.getFullYear()+"-"+m+"-"+day;
+  }
+
+  function setStepper(activeStep){
+    for(var i=1;i<=3;i++){
+      var dot = $("dot"+i), label = $("label"+i);
+      dot.classList.remove("active","done");
+      label.classList.remove("active");
+      if(i < activeStep){
+        dot.classList.add("done");
+        dot.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>';
+      } else if(i === activeStep){
+        dot.classList.add("active");
+        dot.textContent = i;
+        label.classList.add("active");
+      } else {
+        dot.textContent = i;
+      }
+    }
+    var l1 = $("line1"), l2 = $("line2");
+    l1.classList.toggle("done", activeStep > 1);
+    l2.classList.toggle("done", activeStep > 2);
+  }
+
+  function renderHeader(cfg){
+    $("headerInstitucion").textContent = cfg.institucion || "Evaluación";
+    $("headerTema").textContent = cfg.tema || "";
+    if(cfg.logo){
+      $("headerLogo").innerHTML = '<img src="'+cfg.logo+'" alt="Logo de '+(cfg.institucion||"la institución")+'">';
+    }
+  }
+
+  function loadConfig(){
+    fetch("./evaluacion.json", { cache: "no-store" })
+      .then(function(r){ if(!r.ok) throw new Error("not found"); return r.json(); })
+      .then(function(cfg){
+        if(!cfg || !Array.isArray(cfg.preguntas) || cfg.preguntas.length === 0){ throw new Error("empty"); }
+        state.config = cfg;
+        renderHeader(cfg);
+        $("inpFecha").value = todayISO();
+        setStepper(1);
+        showOnly("screen-datos");
+      })
+      .catch(function(){
+        showOnly("screen-error");
+      });
+  }
+
+  $("formDatos").addEventListener("submit", function(e){
+    e.preventDefault();
+    state.participante.nombre = $("inpNombre").value.trim();
+    state.participante.cargo = $("inpCargo").value.trim();
+    state.participante.fecha = $("inpFecha").value;
+    state.respuestas = new Array(state.config.preguntas.length).fill(null);
+    state.current = 0;
+    setStepper(2);
+    showOnly("screen-quiz");
+    renderQuestion();
+  });
+
+  function renderQuestion(){
+    var preguntas = state.config.preguntas;
+    var total = preguntas.length;
+    var q = preguntas[state.current];
+
+    $("quizProgressText").textContent = "Pregunta " + (state.current+1) + " de " + total;
+    $("quizTotalPuntos").textContent = total + " puntos en total";
+    $("quizProgressFill").style.width = Math.round(((state.current+1)/total)*100) + "%";
+    $("quizQNum").textContent = "Pregunta " + (state.current+1);
+    $("quizQText").textContent = q.pregunta;
+
+    var opcionesHtml = "";
+    q.opciones.forEach(function(op, idx){
+      var selected = state.respuestas[state.current] === idx;
+      opcionesHtml += '<label class="option' + (selected ? ' selected' : '') + '" data-idx="' + idx + '">' +
+        '<input type="radio" name="opt" ' + (selected ? "checked" : "") + '>' +
+        '<span>' + op + '</span></label>';
+    });
+    $("quizOptions").innerHTML = opcionesHtml;
+
+    Array.prototype.forEach.call($("quizOptions").querySelectorAll(".option"), function(el){
+      el.addEventListener("click", function(){
+        state.respuestas[state.current] = parseInt(el.getAttribute("data-idx"),10);
+        renderQuestion();
+      });
+    });
+
+    $("btnAnterior").disabled = state.current === 0;
+    $("btnSiguiente").textContent = (state.current === total-1) ? "Finalizar evaluación" : "Siguiente";
+  }
+
+  $("btnAnterior").addEventListener("click", function(){
+    if(state.current > 0){ state.current--; renderQuestion(); }
+  });
+
+  $("btnSiguiente").addEventListener("click", function(){
+    var total = state.config.preguntas.length;
+    if(state.current < total-1){
+      state.current++;
+      renderQuestion();
+    } else {
+      finalizar();
+    }
+  });
+
+  function finalizar(){
+    var preguntas = state.config.preguntas;
+    var correct = 0;
+    preguntas.forEach(function(q, i){
+      if(state.respuestas[i] === q.correcta) correct++;
+    });
+    state.score = correct;
+    state.percent = Math.round((correct/preguntas.length)*100);
+    var minimo = state.config.puntaje_minimo || 90;
+    state.pass = state.percent >= minimo;
+
+    $("resultBadge").className = "badge " + (state.pass ? "badge-pass" : "badge-fail");
+    $("resultBadgeText").textContent = state.pass ? "Aprobado" : "No aprobado";
+    $("resultPercent").textContent = state.percent + "%";
+    $("resultDetail").textContent = correct + " de " + preguntas.length + " respuestas correctas · mínimo para aprobar: " + minimo + "%";
+
+    $("recapNombre").textContent = state.participante.nombre;
+    $("recapCargo").textContent = state.participante.cargo;
+    $("recapFecha").textContent = fechaLarga(state.participante.fecha);
+    $("recapTema").textContent = state.config.tema;
+
+    $("passActions").classList.toggle("hidden", !state.pass);
+    $("failActions").classList.toggle("hidden", state.pass);
+
+    setStepper(3);
+    showOnly("screen-resultado");
+  }
+
+  $("btnReintentar").addEventListener("click", function(){
+    state.respuestas = new Array(state.config.preguntas.length).fill(null);
+    state.current = 0;
+    setStepper(2);
+    showOnly("screen-quiz");
+    renderQuestion();
+  });
+
+  $("btnVerCertificado").addEventListener("click", function(e){
+    e.preventDefault();
+    renderCertificado();
+    hide("screen-resultado");
+    show("screen-certificado");
+  });
+
+  $("btnVolverResultado").addEventListener("click", function(){
+    hide("screen-certificado");
+    show("screen-resultado");
+  });
+
+  $("btnImprimir").addEventListener("click", function(){
+    window.print();
+  });
+
+  function certId(cfg){
+    var inst = (cfg.institucion||"CERT").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase();
+    var d = new Date();
+    var ymd = d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0");
+    var rand = Math.random().toString(36).slice(2,6).toUpperCase();
+    return inst + "-" + ymd + "-" + rand;
+  }
+
+  function renderCertificado(){
+    var cfg = state.config;
+    $("certInstitucion").textContent = cfg.institucion || "";
+    if(cfg.logo){
+      $("certLogo").innerHTML = '<img src="'+cfg.logo+'" alt="Logo de '+(cfg.institucion||"la institución")+'">';
+    }
+    $("certNombre").textContent = state.participante.nombre;
+    $("certCargo").textContent = state.participante.cargo;
+    $("certCuerpo").textContent = 'aprobó la evaluación de conocimientos “' + cfg.tema + '” con un puntaje de ' +
+      state.percent + '% (' + state.score + ' de ' + cfg.preguntas.length + ' respuestas correctas), superando el mínimo requerido del ' + (cfg.puntaje_minimo||90) + '%.';
+    $("certFirmanteNombre").textContent = cfg.firmante_nombre || "";
+    $("certFirmanteCargo").textContent = (cfg.firmante_cargo ? cfg.firmante_cargo + (cfg.institucion ? " · " + cfg.institucion : "") : (cfg.institucion||""));
+    $("certFecha").textContent = (cfg.institucion ? "" : "") + fechaLarga(state.participante.fecha);
+    $("certId").textContent = "N.º de certificado: " + certId(cfg);
+  }
+
+  loadConfig();
+})();
+</script>
+</body>
+</html>

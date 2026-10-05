@@ -1,0 +1,36 @@
+{
+  "institucion": "Praxisalud",
+  "logo": null,
+  "tema": "Protocolo de lavado de manos y prevención de IAAS",
+  "puntaje_minimo": 90,
+  "firmante_nombre": "Fabian",
+  "firmante_cargo": "Coordinador de educación continuada",
+  "generado": "2026-10-04",
+  "preguntas": [
+    {
+      "pregunta": "¿Cuál es el tiempo mínimo recomendado para el lavado de manos con agua y jabón?",
+      "opciones": ["Entre 5 y 10 segundos", "Entre 10 y 15 segundos", "Entre 40 y 60 segundos", "Más de 3 minutos"],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Cuál de los siguientes NO es uno de los cinco momentos para la higiene de manos de la OMS?",
+      "opciones": ["Antes de tocar al paciente", "Después de tocar al paciente", "Antes de almorzar", "Después del contacto con fluidos corporales"],
+      "correcta": 2
+    },
+    {
+      "pregunta": "El uso de alcohol glicerinado está indicado principalmente cuando",
+      "opciones": ["Las manos están visiblemente sucias", "Las manos no están visiblemente sucias", "Se atendió un caso de Clostridioides difficile", "Hay contacto con materia fecal"],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué elemento de protección se debe retirar primero al finalizar la atención de un paciente en aislamiento?",
+      "opciones": ["Guantes", "Tapabocas", "Bata", "Gafas de protección"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "Las infecciones asociadas a la atención en salud (IAAS) se previenen principalmente con",
+      "opciones": ["La higiene de manos y el uso correcto de elementos de protección personal", "El uso permanente de antibióticos de amplio espectro", "El aislamiento de todos los pacientes sin excepción", "La limpieza de áreas comunes una vez al mes"],
+      "correcta": 0
+    }
+  ]
+}
