@@ -1,36 +1,251 @@
 {
-  "institucion": "Praxisalud",
-  "logo": null,
-  "tema": "Protocolo de lavado de manos y prevención de IAAS",
+  "institucion": "Terapia Ocupacional - Profesional Independiente",
+  "logo": "data:image/png;base64,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",
+  "tema": "Evaluación de conocimientos",
   "puntaje_minimo": 90,
-  "firmante_nombre": "Fabian",
-  "firmante_cargo": "Coordinador de educación continuada",
-  "generado": "2026-10-04",
+  "firmante_nombre": "Ing. Fabián Andrés Cheque Pinto",
+  "firmante_cargo": "Asesor Habilitación",
   "preguntas": [
     {
-      "pregunta": "¿Cuál es el tiempo mínimo recomendado para el lavado de manos con agua y jabón?",
-      "opciones": ["Entre 5 y 10 segundos", "Entre 10 y 15 segundos", "Entre 40 y 60 segundos", "Más de 3 minutos"],
-      "correcta": 2
-    },
-    {
-      "pregunta": "¿Cuál de los siguientes NO es uno de los cinco momentos para la higiene de manos de la OMS?",
-      "opciones": ["Antes de tocar al paciente", "Después de tocar al paciente", "Antes de almorzar", "Después del contacto con fluidos corporales"],
-      "correcta": 2
-    },
-    {
-      "pregunta": "El uso de alcohol glicerinado está indicado principalmente cuando",
-      "opciones": ["Las manos están visiblemente sucias", "Las manos no están visiblemente sucias", "Se atendió un caso de Clostridioides difficile", "Hay contacto con materia fecal"],
+      "pregunta": "Antes de iniciar una sesión, ¿cuál es la forma correcta de confirmar la identidad del niño?",
+      "opciones": [
+        "Preguntar únicamente el primer nombre",
+        "Usar al menos dos identificadores y contrastarlos con el registro",
+        "Reconocerlo por su apariencia",
+        "Confirmarlo solo con el cuidador si ya es conocido"
+      ],
       "correcta": 1
     },
     {
-      "pregunta": "¿Qué elemento de protección se debe retirar primero al finalizar la atención de un paciente en aislamiento?",
-      "opciones": ["Guantes", "Tapabocas", "Bata", "Gafas de protección"],
+      "pregunta": "Un niño cae sin presentar lesión aparente. ¿Cuál debe ser la primera actuación?",
+      "opciones": [
+        "Continuar la sesión y observar al final",
+        "Suspender, proteger y valorar al niño",
+        "Registrar sin informar al cuidador",
+        "Solicitar una nueva autorización médica"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuándo puede cerrarse una acción de mejora?",
+      "opciones": [
+        "Cuando se redacta el plan",
+        "Cuando transcurre el plazo",
+        "Cuando existe evidencia de ejecución y eficacia",
+        "Cuando no vuelve a preguntarse por el caso"
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Qué situación debe registrarse como incidente?",
+      "opciones": [
+        "Solo un daño grave",
+        "Una falla que alcanzó o pudo alcanzar al paciente, aunque no cause daño",
+        "Únicamente una queja escrita",
+        "Solo una emergencia atendida por el 123"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué determina el EPP que debe utilizarse?",
+      "opciones": [
+        "La preferencia de la profesional",
+        "El riesgo de exposición y posibilidad de salpicadura",
+        "La duración de la sesión",
+        "La edad del cuidador"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cómo debe utilizarse Eucida Advance?",
+      "opciones": [
+        "Siempre puro y durante un minuto",
+        "Mezclado con hipoclorito",
+        "Según etiqueta, ficha técnica, compatibilidad y tiempo de contacto",
+        "Con la concentración recordada por la profesional"
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta": "Ante un derrame pequeño de vómito, ¿qué acción va primero?",
+      "opciones": [
+        "Aplicar desinfectante de inmediato",
+        "Suspender la actividad y aislar el área",
+        "Llevar el residuo a la administración",
+        "Registrar la contingencia"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué completa una limpieza y desinfección segura?",
+      "opciones": [
+        "Solo que la superficie se vea seca",
+        "Fricción, cobertura, compatibilidad y tiempo de contacto",
+        "Usar dos productos al mismo tiempo",
+        "Aumentar la concentración del producto"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuándo debe segregarse un residuo?",
+      "opciones": [
+        "Al final de la jornada",
+        "En el momento y lugar donde se genera",
+        "Cuando la bolsa esté llena",
+        "Cuando lo solicite Sabana Park"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué residuo corresponde al recipiente blanco?",
+      "opciones": [
+        "Material aprovechable limpio y seco",
+        "Material contaminado con sangre",
+        "Residuo ordinario no aprovechable",
+        "Cualquier residuo del consultorio"
+      ],
       "correcta": 0
     },
     {
-      "pregunta": "Las infecciones asociadas a la atención en salud (IAAS) se previenen principalmente con",
-      "opciones": ["La higiene de manos y el uso correcto de elementos de protección personal", "El uso permanente de antibióticos de amplio espectro", "El aislamiento de todos los pacientes sin excepción", "La limpieza de áreas comunes una vez al mes"],
+      "pregunta": "Tras una contingencia biológica, ¿qué se hace con la bolsa roja?",
+      "opciones": [
+        "Se deja abierta para inspección",
+        "Se mezcla con residuos ordinarios",
+        "Se cierra, identifica, entrega a Sabana Park y se registra",
+        "Se lleva a casa para disposición"
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta": "Si en el mes no se generaron residuos biosanitarios, ¿qué debe registrarse?",
+      "opciones": [
+        "Una cantidad estimada",
+        "La cantidad del mes anterior",
+        "Cero o ausencia de generación, según el formato",
+        "No diligenciar el RH1"
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Qué debe verificarse antes de la atención?",
+      "opciones": [
+        "Solo la agenda",
+        "Ruta de salida, acceso a recursos y números de emergencia",
+        "El pronóstico del tiempo únicamente",
+        "La presencia de otro terapeuta"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "Durante una alarma, ¿qué se hace con el niño que está usando un equipo?",
+      "opciones": [
+        "Se termina el ejercicio",
+        "Se retira de forma segura, se acompaña y se evacúa según la ruta",
+        "Se deja con el personal de parqueadero",
+        "Se espera a que el cuidador decida"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuándo se activa la línea 123?",
+      "opciones": [
+        "Ante una emergencia o posible lesión grave",
+        "Para reprogramar una cita",
+        "Solo después de diligenciar el registro",
+        "Únicamente si lo autoriza el cuidador"
+      ],
       "correcta": 0
+    },
+    {
+      "pregunta": "¿Cuándo puede reingresarse al consultorio después de evacuar?",
+      "opciones": [
+        "Cuando el niño se calme",
+        "Cuando la profesional termine el registro",
+        "Cuando la autoridad o administración responsable lo autorice",
+        "Después de diez minutos"
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Cuál es el alcance del consultorio ante una sospecha de violencia?",
+      "opciones": [
+        "Realizar investigación forense",
+        "Detectar, brindar apoyo inicial, registrar y activar la ruta externa",
+        "Confirmar al agresor mediante entrevista",
+        "Resolver el caso dentro de terapia"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "Ante un relato espontáneo del niño, ¿qué conducta es adecuada?",
+      "opciones": [
+        "Pedir que repita todos los detalles",
+        "Escuchar sin juzgar ni interrogar repetidamente",
+        "Prometer secreto absoluto",
+        "Confrontar de inmediato al posible agresor"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué línea puede utilizarse para orientación y protección infantil?",
+      "opciones": [
+        "141",
+        "195",
+        "911",
+        "018000 de la EPS únicamente"
+      ],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Cómo debe registrarse una sospecha o relato?",
+      "opciones": [
+        "Con interpretaciones personales",
+        "De forma objetiva, incluyendo palabras relevantes y acciones realizadas",
+        "Solo con un diagnóstico",
+        "Sin registrar para proteger la privacidad"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuándo debe registrarse la atención?",
+      "opciones": [
+        "Al final del mes",
+        "De forma oportuna, durante o inmediatamente después de la atención",
+        "Solo cuando existe una novedad",
+        "Cuando el cuidador solicite informe"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cómo se corrige un error en la historia clínica?",
+      "opciones": [
+        "Borrando el dato original",
+        "Creando una corrección trazable sin ocultar el registro original",
+        "Eliminando toda la evolución",
+        "Solicitando al cuidador que lo corrija"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "Antes de enviar información clínica por WhatsApp, ¿qué debe verificarse?",
+      "opciones": [
+        "Que el mensaje sea breve",
+        "Identidad del destinatario, autorización del canal y datos mínimos necesarios",
+        "Que el cuidador use foto de perfil",
+        "Que el número esté en un grupo"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "Si Saludtools no está disponible, ¿qué debe hacerse?",
+      "opciones": [
+        "Omitir el registro",
+        "Usar el formato de contingencia y transcribir después preservando fecha y trazabilidad",
+        "Registrar por WhatsApp",
+        "Esperar varios días sin documentar"
+      ],
+      "correcta": 1
     }
-  ]
+  ],
+  "generado": "2026-10-05"
 }
